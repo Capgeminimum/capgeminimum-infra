@@ -1,0 +1,67 @@
+---
+- name: Setup k3s on Raspberry Pi
+  hosts: raspberry_pi
+  become: true
+  become_user: root
+  become_method: sudo
+  
+  vars:
+    k3s_kubeconfig: /etc/rancher/k3s/k3s.yaml
+  
+  tasks:
+    - name: Update system packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+        autoclean: yes
+
+    - name: Install dependencies
+      apt:
+        name:
+          - curl
+          - wget
+          - git
+          - ca-certificates
+        state: present
+
+    - name: Disable swap (k3s optimization)
+      shell: |
+        swapoff -a
+        sed -i '/ swap / s/^/#/' /etc/fstab
+
+    - name: Install k3s
+      shell: curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=latest sh -
+      args:
+        executable: /bin/bash
+      retries: 3
+      delay: 5
+      register: k3s_install
+      until: k3s_install.rc == 0
+
+    - name: Enable k3s service
+      systemd:
+        name: k3s
+        enabled: yes
+        state: started
+
+    - name: Wait for k3s to be ready
+      pause:
+        seconds: 15
+
+    - name: Copy kubeconfig to standard location
+      shell: mkdir -p ~/.kube && cp {{ k3s_kubeconfig }} ~/.kube/config && chmod 600 ~/.kube/config
+      args:
+        executable: /bin/bash
+
+    - name: Wait for API server to be healthy
+      shell: PATH=$PATH:/usr/local/bin && kubectl get nodes
+      environment:
+        KUBECONFIG: "{{ k3s_kubeconfig }}"
+      retries: 10
+      delay: 5
+      register: k3s_ready
+      until: k3s_ready.rc == 0
+
+    - name: k3s installation complete
+      debug:
+        msg: "k3s is ready! Cluster nodes: {{ k3s_ready.stdout }}"
