@@ -1,0 +1,76 @@
+replicaCount: 1
+
+image:
+  registry: docker.io
+  repository: capgeminimum/backend
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: NodePort
+  port: 3000
+  targetPort: 3000
+  nodePort: 30081
+
+database:
+  host: database-database-postgres.capgeminimum.svc.cluster.local
+  port: 5432
+  name: capgeminimum
+  user: capgeminimum_user
+  passwordSecret:
+    name: database-database-postgres
+    key: database-password
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: null
+
+env: []
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 3000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 3000
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+podSecurityContext:
+  runAsNonRoot: false
+  runAsUser: 0
+
+securityContext:
+  allowPrivilegeEscalation: false
+
+imagePullSecrets: []
+
+serviceAccountName: ""
+
+podAnnotations: {}
+
+nodeSelector: {}
+
+affinity: {}
+
+tolerations: []
