@@ -37,7 +37,7 @@ livenessProbe:
     command:
       - /bin/sh
       - -c
-      - pg_isready -U {{ .Values.database.user }}
+      - pg_isready -U capgeminimum_user
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
@@ -48,7 +48,7 @@ readinessProbe:
     command:
       - /bin/sh
       - -c
-      - pg_isready -U {{ .Values.database.user }}
+      - pg_isready -U capgeminimum_user
   initialDelaySeconds: 10
   periodSeconds: 5
   timeoutSeconds: 3
