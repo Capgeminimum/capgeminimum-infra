@@ -33,4 +33,47 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 2
   targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: null
+
+env: []
+  # - name: REACT_APP_API_URL
+  #   value: "https://api.example.com"
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+podSecurityContext: {}
+
+securityContext: {}
+
+imagePullSecrets: []
+
+serviceAccountName: ""
+
+podAnnotations: {}
+
+nodeSelector: {}
+
+affinity: {}
+
+tolerations: []
+
+persistence:
+  enabled: false
+  mountPath: /data
 
