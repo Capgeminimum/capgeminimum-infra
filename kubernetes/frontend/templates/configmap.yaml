@@ -1,3 +1,4 @@
+{{- if .Values.env }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -5,6 +6,10 @@ metadata:
   labels:
     {{- include "frontend-react-native.labels" . | nindent 4 }}
 data:
-  API_URL: {{ .Values.env | first | .value | quote }}
   NODE_ENV: "production"
-  # Tu peux ajouter d'autres configs ici
+  {{- with .Values.env }}
+  {{- range . }}
+  {{ .name }}: {{ .value | quote }}
+  {{- end }}
+  {{- end }}
+{{- end }}
