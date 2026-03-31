@@ -15,6 +15,10 @@ ingress:
   enabled: true
   className: nginx
   hosts:
+    - host: "10.31.40.27"
+      paths:
+        - path: /
+          pathType: Prefix
     - host: capgeminimum-frontend.local
       paths:
         - path: /
