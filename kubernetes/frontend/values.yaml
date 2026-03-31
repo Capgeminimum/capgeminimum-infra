@@ -7,18 +7,15 @@ image:
   tag: "latest"
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80
   targetPort: 8080
+  nodePort: 30080
 
 ingress:
   enabled: true
   className: nginx
   hosts:
-    - host: "10.31.40.27"
-      paths:
-        - path: /
-          pathType: Prefix
     - host: capgeminimum-frontend.local
       paths:
         - path: /
