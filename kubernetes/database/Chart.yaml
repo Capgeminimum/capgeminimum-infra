@@ -1,0 +1,19 @@
+apiVersion: v2
+name: database-postgres
+description: PostgreSQL database for Capgeminimum backend with Prisma
+
+version: 1.0.0
+appVersion: "15"
+
+keywords:
+  - database
+  - postgresql
+  - prisma
+
+home: https://github.com/Capgeminimum/capgeminimum-infra.git
+sources:
+  - https://github.com/Capgeminimum/capgeminimum-infra.git
+
+annotations:
+  category: "Database"
+  license: "MIT"
