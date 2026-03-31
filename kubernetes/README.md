@@ -8,7 +8,7 @@ Each service should have its own directory with Helm chart or YAML manifests:
 
 ```bash
 kubernetes/
-    frontend/          - Angular frontend
+    frontend/          - React frontend
     backend/           - Node.js backend
     postgres/          - PostgreSQL database
     redis/             - Redis cache

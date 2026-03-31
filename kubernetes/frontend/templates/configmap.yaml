@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "frontend-react-native.fullname" . }}-config
+  labels:
+    {{- include "frontend-react-native.labels" . | nindent 4 }}
+data:
+  API_URL: {{ .Values.env | first | .value | quote }}
+  NODE_ENV: "production"
+  # Tu peux ajouter d'autres configs ici
