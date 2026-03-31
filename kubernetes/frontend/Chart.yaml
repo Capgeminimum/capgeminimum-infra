@@ -15,13 +15,6 @@ home: https://github.com/Capgeminimum/capgeminimum-frontend.git
 sources:
   - https://github.com/Capgeminimum/capgeminimum-frontend.git
 
-dependencies:
-  - name: backend
-    version: 1.0.0
-    repository: "https://github.com/Capgeminimum/capgeminimum-backend.git"
-
 annotations:
  category: "Frontend"
  license: "MIT"
-
- 
